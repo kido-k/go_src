@@ -1,11 +1,9 @@
 package main
 
 import (
+	"chitchat/data"
 	"fmt"
-	// 	"github.com/sausheong/gwp/Chapter_2_Go_ChitChat/chitchat/data"
 	"net/http"
-
-	"github.com/mushahiroyuki/gowebprog/ch02/chitchat/data"
 )
 
 // GET /threads/new

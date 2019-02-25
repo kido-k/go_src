@@ -5,11 +5,11 @@ import (
 	"errors"
 	"fmt"
 
+	"chitchat/data"
 	"html/template"
 	"log"
 	"net/http"
 	"os"
-	"sample/gowebprog/ch02/chitchat/data"
 	"strings"
 )
 
@@ -25,7 +25,7 @@ var logger *log.Logger
 
 // Convenience function for printing to stdout
 func p(a ...interface{}) {
-	fmt.Println(a)
+	// fmt.Println(a) 応急処置
 }
 
 func init() {

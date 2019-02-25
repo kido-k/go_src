@@ -1,10 +1,8 @@
 package main
 
 import (
-	// 	"github.com/sausheong/gwp/Chapter_2_Go_ChitChat/chitchat/data"
+	"chitchat/data"
 	"net/http"
-
-	"github.com/mushahiroyuki/gowebprog/ch02/chitchat/data"
 )
 
 // GET /err?msg=
