@@ -7,13 +7,13 @@ import (
 
 // Delete all threads from database
 func ThreadDeleteAll() (err error) {
-	db := db()
-	defer db.Close()
-	statement := "delete from threads"
-	_, err = db.Exec(statement)
-	if err != nil {
-		return
-	}
+	// db := db()
+	// defer db.Close()
+	// statement := "delete from threads"
+	// _, err = db.Exec(statement)
+	// if err != nil {
+	// 	return
+	// }
 	return
 }
 
