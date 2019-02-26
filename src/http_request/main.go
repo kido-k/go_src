@@ -18,7 +18,18 @@ func body(w http.ResponseWriter, r *http.Request) {
 	body := make([]byte, len)
 	r.Body.Read(body)
 	fmt.Fprintln(w, string(body))
-	fmt.Fprintln(w, "body")
+	// fmt.Fprintln(w, "body")
+}
+
+func process(w http.ResponseWriter, r *http.Request) {
+	// r.ParseForm()           //=>map[hello:[kido_k world] post:[456] thread:[123]]
+	// fmt.Fprintln(w, r.Form) //queryデータとpostデータをリストとして渡す
+	// fmt.Fprintln(w, r.PostForm) //postデータのみ
+
+	r.ParseMultipartForm(1024)       // =>
+	fmt.Fprintln(w, r.MultipartForm) //queryデータとpostデータをリストとして渡す
+
+	fmt.Println("receive")
 }
 
 func main() {
@@ -26,7 +37,8 @@ func main() {
 		Addr: "127.0.0.1:8080",
 	}
 
-	// http.HandleFunc("/headers", headers)
+	http.HandleFunc("/headers", headers)
 	http.HandleFunc("/body", body)
+	http.HandleFunc("/process", process)
 	server.ListenAndServe()
 }
