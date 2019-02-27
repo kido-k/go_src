@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"net/http"
 )
 
@@ -26,9 +27,19 @@ func process(w http.ResponseWriter, r *http.Request) {
 	// fmt.Fprintln(w, r.Form) //queryデータとpostデータをリストとして渡す
 	// fmt.Fprintln(w, r.PostForm) //postデータのみ
 
-	r.ParseMultipartForm(1024)       // =>
-	fmt.Fprintln(w, r.MultipartForm) //queryデータとpostデータをリストとして渡す
+	r.ParseMultipartForm(1024) // =>
+	// fmt.Fprintln(w, r.MultipartForm) //queryデータとpostデータをリストとして渡す
 
+	fileHeader := r.MultipartForm.File["uploaded"][0]
+
+	file, err := fileHeader.Open()
+
+	if err == nil {
+		data, err := ioutil.ReadAll(file)
+		if err == nil {
+			fmt.Fprintln(w, string(data))
+		}
+	}
 	fmt.Println("receive")
 }
 
@@ -37,8 +48,8 @@ func main() {
 		Addr: "127.0.0.1:8080",
 	}
 
-	http.HandleFunc("/headers", headers)
-	http.HandleFunc("/body", body)
+	// http.HandleFunc("/headers", headers)
+	// http.HandleFunc("/body", body)
 	http.HandleFunc("/process", process)
 	server.ListenAndServe()
 }
