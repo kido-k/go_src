@@ -13,6 +13,11 @@ func checkIfElse(w http.ResponseWriter, r *http.Request) {
 	t.Execute(w, rand.Intn(10) > 5)
 }
 
+func checkWith(w http.ResponseWriter, r *http.Request) {
+	t, _ := template.ParseFiles("with.html")
+	t.Execute(w, "hello")
+}
+
 func checkRange(w http.ResponseWriter, r *http.Request) {
 	t, _ := template.ParseFiles("range.html")
 	// daysOfWeek := []string{"月", "火", "水", "木", "金", "土", "日"}
@@ -27,5 +32,6 @@ func main() {
 
 	http.HandleFunc("/ifelse", checkIfElse)
 	http.HandleFunc("/range", checkRange)
+	http.HandleFunc("/with", checkWith)
 	server.ListenAndServe()
 }
