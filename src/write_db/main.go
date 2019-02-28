@@ -8,17 +8,9 @@ import (
 )
 
 type Post struct {
-	Id       int
-	Content  string
-	Author   string
-	Comments []Comment
-}
-
-type Comment struct {
 	Id      int
 	Content string
 	Author  string
-	Post    *Post
 }
 
 var Db *sql.DB
