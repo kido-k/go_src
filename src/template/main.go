@@ -15,8 +15,8 @@ func checkIfElse(w http.ResponseWriter, r *http.Request) {
 
 func checkRange(w http.ResponseWriter, r *http.Request) {
 	t, _ := template.ParseFiles("range.html")
-	// daysOfWeek := []string{"月", "火", "水", "木", "金", "土", "日"}
-	daysOfWeek := []string{}
+	daysOfWeek := []string{"月", "火", "水", "木", "金", "土", "日"}
+	// daysOfWeek := []string{}
 	t.Execute(w, daysOfWeek)
 }
 
@@ -30,6 +30,18 @@ func checkInclude(w http.ResponseWriter, r *http.Request) {
 	t.Execute(w, "Hello World!")
 }
 
+func checkTimeFormat(w http.ResponseWriter, r *http.Request) {
+	funcMap := template.FuncMap{"fdate": formatData}
+	t := template.New("timeformat.html").Funcs(funcMap)
+	t, _ = t.ParseFiles("timeformat.html")
+	t.Execute(w, time.Now())
+}
+
+func formatData(t time.Time) string {
+	layout := "2006-01-02"
+	return t.Format(layout)
+}
+
 func main() {
 	server := http.Server{
 		Addr: "127.0.0.1:8080",
@@ -39,5 +51,6 @@ func main() {
 	http.HandleFunc("/range", checkRange)
 	http.HandleFunc("/with", checkWith)
 	http.HandleFunc("/include", checkInclude)
+	http.HandleFunc("/time", checkTimeFormat)
 	server.ListenAndServe()
 }

@@ -8,8 +8,8 @@
 
 <body>
     <ul>
-        {{range .}}
-        <li>{{.}}</li>
+        {{range $key, $value:=.}}
+        <li><p>keyは{{$key}}、valueは{{$value}}です。</p></li>
         {{else}}
         <p>表示するものがありません</p>
         {{end}}
