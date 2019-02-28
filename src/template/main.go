@@ -37,15 +37,49 @@ func checkTimeFormat(w http.ResponseWriter, r *http.Request) {
 	t.Execute(w, time.Now())
 }
 
+func checkContext(w http.ResponseWriter, r *http.Request) {
+	t, _ := template.ParseFiles("context.html")
+	content := `I asked: <i>"What's up?"</i>`
+	t.Execute(w, content)
+}
+
+func checkXSS(w http.ResponseWriter, r *http.Request) {
+	// w.Header().Set("X-XSS-Protection", "0") //chromeとかのxss保護を解除
+	t, _ := template.ParseFiles("xss.html")
+	t.Execute(w, r.FormValue("comment"))
+	// t.Execute(w, template.HTML(r.FormValue("comment"))) //firefoxならalertが反応
+}
+
 func formatData(t time.Time) string {
 	layout := "2006-01-02"
 	return t.Format(layout)
 }
 
-func checkContext(w http.ResponseWriter, r *http.Request) {
-	t, _ := template.ParseFiles("context.html")
-	content := `I asked: <i>"What's up?"</i>`
-	t.Execute(w, content)
+func checkLayout(w http.ResponseWriter, r *http.Request) {
+	// t, _ := template.ParseFiles("layout.html")
+	// t.ExecuteTemplate(w, "layout", "")
+
+	rand.Seed(time.Now().Unix())
+	var t *template.Template
+
+	// if rand.Intn(10) > 5 {
+	// 	t, _ = template.ParseFiles("layout.html", "red_hello.html")
+	// } else {
+	// 	t, _ = template.ParseFiles("layout.html", "blue_hello.html")
+	// }
+
+	if rand.Intn(10) > 5 {
+		t, _ = template.ParseFiles("layout.html", "red_hello.html")
+	} else {
+		t, _ = template.ParseFiles("layout.html")
+	}
+
+	t.ExecuteTemplate(w, "layout", "")
+}
+
+func form(w http.ResponseWriter, r *http.Request) {
+	t, _ := template.ParseFiles("form.html")
+	t.Execute(w, nil)
 }
 
 func main() {
@@ -59,5 +93,8 @@ func main() {
 	http.HandleFunc("/include", checkInclude)
 	http.HandleFunc("/time", checkTimeFormat)
 	http.HandleFunc("/context", checkContext)
+	http.HandleFunc("/xss", checkXSS)
+	http.HandleFunc("/form", form)
+	http.HandleFunc("/layout", checkLayout)
 	server.ListenAndServe()
 }
