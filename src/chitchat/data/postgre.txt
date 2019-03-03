@@ -1,0 +1,7 @@
+psql -U postgres
+
+createuser -a -d -U postgres -P chitchat
+
+createdb -E UTF-8 -O chitchat -U chitchat chitchat
+
+psql -U chitchat -f setup.sql -d chitchat
