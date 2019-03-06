@@ -46,7 +46,7 @@ func averageColor(img image.Image) [3]float64 {
 	return [3]float64{r / totalPixels, g / totalPixels, b / totalPixels}
 }
 
-func tileDB() map[string][3]float64 {
+func tilesDB() map[string][3]float64 {
 	fmt.Println("start populating tiles db ...")
 	db := make(map[string][3]float64)
 	files, _ := ioutil.ReadDir("tiles")
