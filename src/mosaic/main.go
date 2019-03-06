@@ -37,7 +37,6 @@ func upload(w http.ResponseWriter, r *http.Request) {
 }
 
 func mosaic(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Start")
 	t0 := time.Now()
 
 	r.ParseMultipartForm(10485760)
@@ -53,19 +52,9 @@ func mosaic(w http.ResponseWriter, r *http.Request) {
 	db := cloneTilesDB()
 
 	sp := image.Point{0, 0}
-	fmt.Println("before for")
-
-	fmt.Println("tileSize", tileSize)
-	fmt.Println("bounds.Min.Y", bounds.Min.Y)
-	fmt.Println("bounds.Max.Y", bounds.Max.Y)
-	fmt.Println("bounds.Min.X", bounds.Min.X)
-	fmt.Println("bounds.Max.X", bounds.Max.X)
 
 	for y := bounds.Min.Y; y < bounds.Max.Y; y = y + tileSize {
-		fmt.Println("y=", y)
 		for x := bounds.Min.X; x < bounds.Max.X; x = x + tileSize {
-			fmt.Println("x=", x)
-
 			r, g, b, _ := original.At(x, y).RGBA()
 			color := [3]float64{float64(r), float64(g), float64(b)}
 
@@ -87,7 +76,6 @@ func mosaic(w http.ResponseWriter, r *http.Request) {
 			file.Close()
 		}
 	}
-	fmt.Println("after for")
 
 	buf1 := new(bytes.Buffer)
 	jpeg.Encode(buf1, original, nil)
@@ -95,7 +83,6 @@ func mosaic(w http.ResponseWriter, r *http.Request) {
 
 	buf2 := new(bytes.Buffer)
 	jpeg.Encode(buf2, newimage, nil)
-	fmt.Println("check1")
 
 	mosaic := base64.StdEncoding.EncodeToString(buf2.Bytes())
 	t1 := time.Now()
@@ -104,7 +91,6 @@ func mosaic(w http.ResponseWriter, r *http.Request) {
 		"mosaic":   mosaic,
 		"duration": fmt.Sprintf("%v", t1.Sub(t0)),
 	}
-	fmt.Println("check2")
 
 	t, _ := template.ParseFiles("results.html")
 	t.Execute(w, images)
