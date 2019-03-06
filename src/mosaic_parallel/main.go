@@ -38,7 +38,6 @@ func upload(w http.ResponseWriter, r *http.Request) {
 }
 
 func mosaic(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Start")
 	t0 := time.Now()
 
 	r.ParseMultipartForm(10485760)
